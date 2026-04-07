@@ -1,10 +1,10 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { format, startOfMonth, subDays } from 'date-fns'
-import { Search, ArrowUpDown } from 'lucide-react'
+import { startOfMonth, subDays } from 'date-fns'
+import { Search, ArrowUpDown, ChevronDown } from 'lucide-react'
 import AddTransactionModal from '@/components/AddTransactionModal'
-import DeleteTransactionButton from '@/components/DeleteTransactionButton'
+import EditableTransactionRow from '@/components/EditableTransactionRow'
 
 type CategoryType = {
   id: string
@@ -177,40 +177,49 @@ export default function TransactionsClient({
             />
           </div>
 
-          <select
-            className="soft-input"
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-          >
-            <option value="all">All Categories</option>
-            {safeCategories.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.name}
-              </option>
-            ))}
-          </select>
+          <div className="field-shell">
+            <select
+              className="soft-input select-no-native pr-10"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <option value="all">All Categories</option>
+              {safeCategories.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+            <ChevronDown className="field-icon h-4 w-4" />
+          </div>
 
-          <select
-            className="soft-input"
-            value={selectedType}
-            onChange={(e) => setSelectedType(e.target.value)}
-          >
-            <option value="all">All Types</option>
-            <option value="income">Income</option>
-            <option value="expense">Expense</option>
-          </select>
+          <div className="field-shell">
+            <select
+              className="soft-input select-no-native pr-10"
+              value={selectedType}
+              onChange={(e) => setSelectedType(e.target.value)}
+            >
+              <option value="all">All Types</option>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+            <ChevronDown className="field-icon h-4 w-4" />
+          </div>
 
-          <select
-            className="soft-input"
-            value={dateRange}
-            onChange={(e) => setDateRange(e.target.value)}
-          >
-            <option value="all">All Time</option>
-            <option value="thisMonth">This Month</option>
-            <option value="last10">Last 10 Days</option>
-            <option value="last30">Last 30 Days</option>
-            <option value="last90">Last 90 Days</option>
-          </select>
+          <div className="field-shell">
+            <select
+              className="soft-input select-no-native pr-10"
+              value={dateRange}
+              onChange={(e) => setDateRange(e.target.value)}
+            >
+              <option value="all">All Time</option>
+              <option value="thisMonth">This Month</option>
+              <option value="last10">Last 10 Days</option>
+              <option value="last30">Last 30 Days</option>
+              <option value="last90">Last 90 Days</option>
+            </select>
+            <ChevronDown className="field-icon h-4 w-4" />
+          </div>
 
           <button
             onClick={() =>
@@ -250,67 +259,13 @@ export default function TransactionsClient({
 
         <div className="space-y-3">
           {filteredTransactions.length > 0 ? (
-            filteredTransactions.map((txn) => {
-              const category = Array.isArray(txn.categories)
-                ? txn.categories[0]
-                : txn.categories
-
-              const badgeColor = category?.color || '#94a3b8'
-
-              return (
-                <div
-                  key={txn.id}
-                  className="empty-surface flex items-center justify-between rounded-2xl border px-4 py-4"
-                >
-                  <div className="flex items-center gap-4">
-                    <div
-                      className="flex h-11 w-11 items-center justify-center rounded-full text-sm font-bold text-white"
-                      style={{ backgroundColor: badgeColor }}
-                    >
-                      {(category?.name || txn.title || 'T')[0]}
-                    </div>
-
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <p className="font-semibold">
-                          {category?.name || txn.title}
-                        </p>
-                        <span
-                          className={`rounded-md px-2 py-0.5 text-xs font-medium ${
-                            txn.type === 'income'
-                              ? 'bg-green-100 text-green-700'
-                              : 'bg-red-100 text-red-700'
-                          }`}
-                        >
-                          {txn.type === 'income' ? 'Money In' : 'Money Out'}
-                        </span>
-                      </div>
-
-                      <p className="text-sm text-muted">
-                        {format(new Date(txn.transaction_date), 'MMMM d, yyyy')}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <div className="text-right">
-                      <p
-                        className={`text-3xl font-bold ${
-                          txn.type === 'income'
-                            ? 'text-green-700'
-                            : 'text-red-700'
-                        }`}
-                      >
-                        {txn.type === 'income' ? '+' : '-'}$
-                        {Number(txn.amount).toFixed(2)}
-                      </p>
-                    </div>
-
-                    <DeleteTransactionButton transactionId={txn.id} />
-                  </div>
-                </div>
-              )
-            })
+            filteredTransactions.map((txn) => (
+              <EditableTransactionRow
+                key={txn.id}
+                txn={txn}
+                categories={safeCategories}
+              />
+            ))
           ) : (
             <div className="empty-surface rounded-2xl border border-dashed p-8 text-center">
               No transactions found.

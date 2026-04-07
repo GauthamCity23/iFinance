@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { X } from 'lucide-react'
+import { X, ChevronDown } from 'lucide-react'
 import { createClient } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 
@@ -101,14 +101,17 @@ export default function AddCategoryModal({ open, onClose }: Props) {
 
           <div>
             <label className="mb-2 block text-sm font-medium">Type</label>
-            <select
-              className="soft-input"
-              value={kind}
-              onChange={(e) => setKind(e.target.value)}
-            >
-              <option value="expense">Expense</option>
-              <option value="income">Income</option>
-            </select>
+            <div className="field-shell">
+              <select
+                className="soft-input select-no-native pr-10"
+                value={kind}
+                onChange={(e) => setKind(e.target.value)}
+              >
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+              </select>
+              <ChevronDown className="field-icon h-4 w-4" />
+            </div>
           </div>
 
           <div>

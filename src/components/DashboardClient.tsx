@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   ResponsiveContainer,
   LineChart,
@@ -18,6 +18,8 @@ import { format } from 'date-fns'
 import AddCategoryModal from '@/components/AddCategoryModal'
 import AddTransactionModal from '@/components/AddTransactionModal'
 import MonthPicker from '@/components/MonthPicker'
+import DeleteCategoryButton from '@/components/DeleteCategoryButton'
+import EditCategoryButton from '@/components/EditCategoryButton'
 
 type CategoryType = {
   id: string
@@ -84,6 +86,8 @@ type Props = {
   recentTransactions: TransactionType[]
 }
 
+type ChartView = 'both' | 'income' | 'expense'
+
 export default function DashboardClient({
   selectedMonth,
   categories,
@@ -97,6 +101,13 @@ export default function DashboardClient({
 }: Props) {
   const [categoryModalOpen, setCategoryModalOpen] = useState(false)
   const [transactionModalOpen, setTransactionModalOpen] = useState(false)
+  const [chartView, setChartView] = useState<ChartView>('both')
+
+  const chartSubtitle = useMemo(() => {
+    if (chartView === 'income') return 'Income over time'
+    if (chartView === 'expense') return 'Expenses over time'
+    return 'Income vs expenses over time'
+  }, [chartView])
 
   return (
     <>
@@ -169,10 +180,41 @@ export default function DashboardClient({
 
       <div className="mb-8 grid gap-6 lg:grid-cols-2">
         <div className="panel-card p-6">
-          <h3 className="section-title">6-Month Trend</h3>
-          <p className="mb-5 text-sm text-muted">
-            Income vs expenses over time
-          </p>
+          <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <h3 className="section-title">6-Month Trend</h3>
+              <p className="mt-1 text-sm text-muted">{chartSubtitle}</p>
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => setChartView('income')}
+                className={
+                  chartView === 'income' ? 'btn-primary' : 'btn-secondary'
+                }
+              >
+                Income
+              </button>
+
+              <button
+                onClick={() => setChartView('expense')}
+                className={
+                  chartView === 'expense' ? 'btn-primary' : 'btn-secondary'
+                }
+              >
+                Expenses
+              </button>
+
+              <button
+                onClick={() => setChartView('both')}
+                className={
+                  chartView === 'both' ? 'btn-primary' : 'btn-secondary'
+                }
+              >
+                Compare
+              </button>
+            </div>
+          </div>
 
           <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -188,20 +230,28 @@ export default function DashboardClient({
                     color: 'var(--foreground)',
                   }}
                 />
-                <Line
-                  type="monotone"
-                  dataKey="income"
-                  stroke="var(--income-base)"
-                  strokeWidth={3}
-                  dot={{ r: 4 }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="expense"
-                  stroke="var(--expense-base)"
-                  strokeWidth={3}
-                  dot={{ r: 4 }}
-                />
+
+                {(chartView === 'both' || chartView === 'income') && (
+                  <Line
+                    type="monotone"
+                    dataKey="income"
+                    stroke="var(--income-base)"
+                    strokeWidth={3}
+                    dot={{ r: 4 }}
+                    name="Income"
+                  />
+                )}
+
+                {(chartView === 'both' || chartView === 'expense') && (
+                  <Line
+                    type="monotone"
+                    dataKey="expense"
+                    stroke="var(--expense-base)"
+                    strokeWidth={3}
+                    dot={{ r: 4 }}
+                    name="Expenses"
+                  />
+                )}
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -251,11 +301,11 @@ export default function DashboardClient({
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <div className="panel-card p-6">
+        <div className="panel-card min-h-[460px] p-6">
           <h3 className="section-title">Your Categories</h3>
           <p className="mb-5 text-sm text-muted">Manage your categories</p>
 
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid max-h-[360px] gap-4 overflow-y-auto pr-2 md:grid-cols-2">
             {categorySummary.map((cat) => (
               <div
                 key={cat.id}
@@ -265,12 +315,32 @@ export default function DashboardClient({
                   backgroundColor: 'var(--card)',
                 }}
               >
-                <div className="mb-3 flex items-center gap-2">
-                  <span
-                    className="h-3 w-3 rounded-full"
-                    style={{ backgroundColor: cat.displayColor }}
-                  />
-                  <p className="font-semibold">{cat.name}</p>
+                <div className="mb-3 flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className="h-3 w-3 rounded-full"
+                        style={{ backgroundColor: cat.displayColor }}
+                      />
+                      <p className="truncate font-semibold">{cat.name}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <EditCategoryButton
+                      categoryId={cat.id}
+                      initialName={cat.name}
+                      initialKind={cat.kind}
+                      initialColor={cat.color}
+                      transactionCount={cat.transactionCount}
+                    />
+
+                    <DeleteCategoryButton
+                      categoryId={cat.id}
+                      categoryName={cat.name}
+                      categoryKind={cat.kind}
+                    />
+                  </div>
                 </div>
 
                 <p
@@ -281,10 +351,16 @@ export default function DashboardClient({
                   ${Math.abs(cat.total).toFixed(2)}
                 </p>
 
-                <p className="mt-2 text-sm text-muted">
-                  {cat.transactionCount} transaction
-                  {cat.transactionCount === 1 ? '' : 's'}
-                </p>
+                <div className="mt-3 flex items-center justify-between">
+                  <p className="text-sm text-muted">
+                    {cat.transactionCount} transaction
+                    {cat.transactionCount === 1 ? '' : 's'}
+                  </p>
+
+                  <span className="rounded-full border px-2.5 py-1 text-xs text-muted">
+                    {cat.kind}
+                  </span>
+                </div>
               </div>
             ))}
 
@@ -296,11 +372,11 @@ export default function DashboardClient({
           </div>
         </div>
 
-        <div className="panel-card p-6">
+        <div className="panel-card min-h-[460px] p-6">
           <h3 className="section-title">Recent Transactions</h3>
           <p className="mb-5 text-sm text-muted">Latest activity this month</p>
 
-          <div className="space-y-3">
+          <div className="max-h-[360px] space-y-3 overflow-y-auto pr-2">
             {recentTransactions.length > 0 ? (
               recentTransactions.map((txn) => {
                 const category = Array.isArray(txn.categories)

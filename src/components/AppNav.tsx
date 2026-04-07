@@ -2,12 +2,13 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, Receipt, Settings, Landmark } from 'lucide-react'
+import { Home, Receipt, Settings, Landmark, BarChart3 } from 'lucide-react'
 import LogoutButton from '@/components/LogoutButton'
 
 const links = [
   { href: '/dashboard', label: 'Dashboard', icon: Home },
   { href: '/transactions', label: 'Transactions', icon: Receipt },
+  { href: '/reports', label: 'Reports', icon: BarChart3 },
   { href: '/settings', label: 'Settings', icon: Settings },
 ]
 

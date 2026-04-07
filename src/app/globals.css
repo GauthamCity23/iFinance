@@ -219,3 +219,60 @@ textarea {
   border-color: var(--border);
   color: var(--muted);
 }
+
+/* Better native control behavior */
+input[type='date'],
+input[type='month'] {
+  color-scheme: light;
+}
+
+[data-theme='dark'] input[type='date'],
+[data-theme='dark'] input[type='month'] {
+  color-scheme: dark;
+}
+
+/* Make calendar icon visible in dark mode on WebKit browsers */
+[data-theme='dark'] input[type='date']::-webkit-calendar-picker-indicator,
+[data-theme='dark'] input[type='month']::-webkit-calendar-picker-indicator {
+  filter: invert(1) opacity(0.9);
+  cursor: pointer;
+}
+
+/* Optional: hide native select arrow so we can use our own */
+.select-no-native {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: none;
+}
+
+/* A consistent wrapper for custom dropdown arrows / right-side icons */
+.field-shell {
+  position: relative;
+}
+
+.field-shell .field-icon {
+  pointer-events: none;
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--muted) 35%, transparent);
+  border-radius: 9999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--muted) 55%, transparent);
+}

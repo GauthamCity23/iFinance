@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { X } from 'lucide-react'
+import { X, CalendarDays, ChevronDown } from 'lucide-react'
 import { createClient } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 
@@ -121,43 +121,52 @@ export default function AddTransactionModal({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="mb-2 block text-sm font-medium">Type</label>
-            <select
-              className="soft-input"
-              value={type}
-              onChange={(e) => {
-                setType(e.target.value)
-                setCategoryId('')
-              }}
-            >
-              <option value="expense">Expense</option>
-              <option value="income">Income</option>
-            </select>
+            <div className="field-shell">
+              <select
+                className="soft-input select-no-native pr-10"
+                value={type}
+                onChange={(e) => {
+                  setType(e.target.value)
+                  setCategoryId('')
+                }}
+              >
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+              </select>
+              <ChevronDown className="field-icon h-4 w-4" />
+            </div>
           </div>
 
           <div>
             <label className="mb-2 block text-sm font-medium">Date</label>
-            <input
-              className="soft-input"
-              type="date"
-              value={transactionDate}
-              onChange={(e) => setTransactionDate(e.target.value)}
-            />
+            <div className="field-shell">
+              <input
+                className="soft-input pr-10"
+                type="date"
+                value={transactionDate}
+                onChange={(e) => setTransactionDate(e.target.value)}
+              />
+              <CalendarDays className="field-icon h-4 w-4" />
+            </div>
           </div>
 
           <div>
             <label className="mb-2 block text-sm font-medium">Category</label>
-            <select
-              className="soft-input"
-              value={categoryId}
-              onChange={(e) => setCategoryId(e.target.value)}
-            >
-              <option value="">Select category</option>
-              {filteredCategories.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
+            <div className="field-shell">
+              <select
+                className="soft-input select-no-native pr-10"
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)}
+              >
+                <option value="">Select category</option>
+                {filteredCategories.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="field-icon h-4 w-4" />
+            </div>
           </div>
 
           <div>
