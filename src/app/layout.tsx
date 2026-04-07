@@ -1,21 +1,21 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Inter, Space_Grotesk } from 'next/font/google'
 import './globals.css'
 import ThemeProviderServer from '@/components/ThemeProviderServer'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const inter = Inter({
   subsets: ['latin'],
+  variable: '--font-inter',
 })
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
+  variable: '--font-space-grotesk',
 })
 
 export const metadata: Metadata = {
-  title: 'Finance Tracker',
-  description: 'Track expenses, income, and monthly trends',
+  title: 'FlowFi',
+  description: 'Track spending, budgets, and reports in one place.',
 }
 
 export default function RootLayout({
@@ -26,9 +26,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${spaceGrotesk.variable}`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full">
+      <body className="font-sans antialiased">
         <ThemeProviderServer>{children}</ThemeProviderServer>
       </body>
     </html>

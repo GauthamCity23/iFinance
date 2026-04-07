@@ -7,6 +7,19 @@
   --balance-base: #4f46e5;
 }
 
+:root {
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-space-grotesk);
+}
+
+body {
+  font-family: var(--font-sans), sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-display), sans-serif;
+}
+
 [data-theme='light'] {
   --background: #f9fafb;
   --foreground: #18212f;

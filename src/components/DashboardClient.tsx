@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import Link from 'next/link'
 import {
   ResponsiveContainer,
   LineChart,
@@ -58,6 +59,17 @@ type TrendPoint = {
   expense: number
 }
 
+type BudgetSummaryType = {
+  id: string
+  name: string
+  color: string
+  budgetAmount: number
+  spent: number
+  remaining: number
+  percentUsed: number
+  isOverBudget: boolean
+}
+
 type CategoryBreakdownType = {
   name: string
   value: number
@@ -84,6 +96,7 @@ type Props = {
   categoryData: CategoryBreakdownType[]
   categorySummary: CategorySummaryType[]
   recentTransactions: TransactionType[]
+  budgetSummary: BudgetSummaryType[]
 }
 
 type ChartView = 'both' | 'income' | 'expense'
@@ -98,6 +111,7 @@ export default function DashboardClient({
   categoryData,
   categorySummary,
   recentTransactions,
+  budgetSummary,
 }: Props) {
   const [categoryModalOpen, setCategoryModalOpen] = useState(false)
   const [transactionModalOpen, setTransactionModalOpen] = useState(false)
@@ -108,6 +122,21 @@ export default function DashboardClient({
     if (chartView === 'expense') return 'Expenses over time'
     return 'Income vs expenses over time'
   }, [chartView])
+
+  const totalBudgeted = budgetSummary.reduce(
+    (sum, item) => sum + item.budgetAmount,
+    0,
+  )
+  const totalBudgetSpent = budgetSummary.reduce(
+    (sum, item) => sum + item.spent,
+    0,
+  )
+  const totalBudgetRemaining = totalBudgeted - totalBudgetSpent
+  const overBudgetCount = budgetSummary.filter(
+    (item) => item.isOverBudget,
+  ).length
+
+  const previewBudgets = budgetSummary.slice(0, 4)
 
   return (
     <>
@@ -173,7 +202,10 @@ export default function DashboardClient({
             <p className="metric-label">Net Balance</p>
             <DollarSign className="h-5 w-5 opacity-70" />
           </div>
-          <p className="metric-value">${netBalance.toFixed(2)}</p>
+          <p className="metric-value">
+            {netBalance < 0 ? '-$' : '$'}
+            {Math.abs(netBalance).toFixed(2)}
+          </p>
           <p className="metric-subtext">Income - Expenses</p>
         </div>
       </div>
@@ -297,6 +329,110 @@ export default function DashboardClient({
               </div>
             )}
           </div>
+        </div>
+      </div>
+
+      <div className="mb-8 panel-card p-6">
+        <div className="mb-5 flex items-start justify-between gap-4">
+          <div>
+            <h3 className="section-title">Budget Snapshot</h3>
+            <p className="text-sm text-muted">
+              Quick view of this month’s budgets
+            </p>
+          </div>
+
+          <Link
+            href={`/budgets?month=${selectedMonth}`}
+            className="btn-secondary"
+          >
+            View All Budgets
+          </Link>
+        </div>
+
+        <div className="mb-5 grid gap-4 md:grid-cols-4">
+          <div className="empty-surface rounded-2xl border p-4">
+            <p className="text-sm text-muted">Budgeted</p>
+            <p className="mt-2 text-2xl font-bold">
+              ${totalBudgeted.toFixed(2)}
+            </p>
+          </div>
+
+          <div className="empty-surface rounded-2xl border p-4">
+            <p className="text-sm text-muted">Spent</p>
+            <p className="mt-2 text-2xl font-bold">
+              ${totalBudgetSpent.toFixed(2)}
+            </p>
+          </div>
+
+          <div className="empty-surface rounded-2xl border p-4">
+            <p className="text-sm text-muted">Remaining</p>
+            <p className="mt-2 text-2xl font-bold">
+              ${Math.abs(totalBudgetRemaining).toFixed(2)}
+            </p>
+          </div>
+
+          <div className="empty-surface rounded-2xl border p-4">
+            <p className="text-sm text-muted">Over Budget</p>
+            <p className="mt-2 text-2xl font-bold">{overBudgetCount}</p>
+          </div>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          {previewBudgets.length > 0 ? (
+            previewBudgets.map((item) => (
+              <div
+                key={item.id}
+                className="rounded-2xl border p-4"
+                style={{
+                  borderColor: item.color,
+                  backgroundColor: 'var(--card)',
+                }}
+              >
+                <div className="mb-3 flex items-center justify-between gap-3">
+                  <div className="min-w-0 flex items-center gap-2">
+                    <span
+                      className="h-3 w-3 rounded-full"
+                      style={{ backgroundColor: item.color }}
+                    />
+                    <p className="truncate font-semibold">{item.name}</p>
+                  </div>
+
+                  <p className="text-sm text-muted">
+                    {item.budgetAmount > 0
+                      ? `${item.percentUsed.toFixed(1)}% used`
+                      : 'No budget'}
+                  </p>
+                </div>
+
+                <div className="h-2 overflow-hidden rounded-full bg-[var(--border)]">
+                  <div
+                    className="h-full rounded-full transition-all"
+                    style={{
+                      width: `${Math.min(item.percentUsed, 100)}%`,
+                      backgroundColor: item.isOverBudget
+                        ? '#dc2626'
+                        : item.color,
+                    }}
+                  />
+                </div>
+
+                <div className="mt-3 flex justify-between text-sm">
+                  <span className="text-muted">
+                    ${item.spent.toFixed(2)} spent
+                  </span>
+                  <span className="font-medium">
+                    {item.budgetAmount > 0
+                      ? `$${item.budgetAmount.toFixed(2)} budget`
+                      : 'Not set'}
+                  </span>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="empty-surface rounded-2xl border border-dashed p-6 text-sm text-muted md:col-span-2">
+              No expense categories yet
+            </div>
+          )}
         </div>
       </div>
 

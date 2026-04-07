@@ -2,12 +2,20 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, Receipt, Settings, Landmark, BarChart3 } from 'lucide-react'
+import {
+  Home,
+  Receipt,
+  Settings,
+  Landmark,
+  BarChart3,
+  Wallet,
+} from 'lucide-react'
 import LogoutButton from '@/components/LogoutButton'
 
 const links = [
   { href: '/dashboard', label: 'Dashboard', icon: Home },
   { href: '/transactions', label: 'Transactions', icon: Receipt },
+  { href: '/budgets', label: 'Budgets', icon: Wallet },
   { href: '/reports', label: 'Reports', icon: BarChart3 },
   { href: '/settings', label: 'Settings', icon: Settings },
 ]
@@ -22,8 +30,8 @@ export default function AppNav() {
           <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--card)] shadow-sm">
             <Landmark className="h-5 w-5" style={{ color: 'var(--accent)' }} />
           </div>
-          <h1 className="text-xl font-bold text-[var(--foreground)]">
-            Finance Tracker
+          <h1 className="font-display text-2xl font-bold tracking-tight text-[var(--foreground)]">
+            FlowFi
           </h1>
         </div>
 

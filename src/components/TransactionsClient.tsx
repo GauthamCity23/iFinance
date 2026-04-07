@@ -168,9 +168,11 @@ export default function TransactionsClient({
 
         <div className="grid gap-3 lg:grid-cols-5">
           <div className="relative">
-            <Search className="pointer-events-none absolute left-3 top-3.5 h-4 w-4 text-muted" />
+            <Search className="pointer-events-none absolute left-4 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-muted" />
+
             <input
-              className="soft-input pl-10"
+              type="text"
+              className="soft-input w-full !pl-14 pr-4"
               placeholder="Search transactions..."
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}

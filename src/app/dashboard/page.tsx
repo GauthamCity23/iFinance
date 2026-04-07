@@ -152,6 +152,41 @@ export default async function DashboardPage({
     }
   })
 
+  const budgetMonthDate = `${selectedMonth}-01`
+
+  const { data: budgets } = await supabase
+    .from('budgets')
+    .select('id, category_id, amount, budget_month')
+    .eq('user_id', user.id)
+    .eq('budget_month', budgetMonthDate)
+
+  const safeBudgets = budgets || []
+
+  const budgetSummary = expenseCategories.map((cat, index) => {
+    const spent = monthTransactions
+      .filter((item) => item.type === 'expense' && item.category_id === cat.id)
+      .reduce((sum, item) => sum + Number(item.amount), 0)
+
+    const matchingBudget = safeBudgets.find(
+      (item) => item.category_id === cat.id,
+    )
+    const budgetAmount = matchingBudget ? Number(matchingBudget.amount) : 0
+    const remaining = budgetAmount - spent
+    const percentUsed =
+      budgetAmount > 0 ? Math.min((spent / budgetAmount) * 100, 999) : 0
+
+    return {
+      id: cat.id,
+      name: cat.name,
+      color: cat.color || fallbackColors[index % fallbackColors.length],
+      budgetAmount,
+      spent,
+      remaining,
+      percentUsed,
+      isOverBudget: budgetAmount > 0 && spent > budgetAmount,
+    }
+  })
+
   return (
     <div className="finance-shell">
       <AppNav />
@@ -166,6 +201,7 @@ export default async function DashboardPage({
           categoryData={categoryData}
           categorySummary={categorySummary}
           recentTransactions={recentTransactions}
+          budgetSummary={budgetSummary}
         />
       </div>
     </div>
