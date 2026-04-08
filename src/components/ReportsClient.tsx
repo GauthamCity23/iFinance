@@ -67,13 +67,13 @@ export default function ReportsClient({
     <>
       <div className="mb-8 flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
         <div>
-          <h2 className="page-title">Reports</h2>
+          <h2 className="page-title font-display">Reports</h2>
           <p className="mt-2 text-base text-muted">
             Visualize your income, expenses, and trends over time
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="grid w-full gap-3 sm:flex sm:w-auto sm:flex-wrap">
           <a
             href={buildRangeHref('3m')}
             className={selectedRange === '3m' ? 'btn-primary' : 'btn-secondary'}
@@ -121,7 +121,7 @@ export default function ReportsClient({
         </div>
       </div>
 
-      <div className="mb-8 grid gap-5 md:grid-cols-3">
+      <div className="mb-8 grid gap-4 md:grid-cols-3">
         <div className="metric-card metric-income">
           <div className="mb-5">
             <p className="metric-label">Total Income</p>
@@ -142,19 +142,22 @@ export default function ReportsClient({
           <div className="mb-5">
             <p className="metric-label">Net Balance</p>
           </div>
-          <p className="metric-value">${Number(totalNet).toFixed(2)}</p>
+          <p className="metric-value">
+            {Number(totalNet) < 0 ? '-$' : '$'}
+            {Math.abs(Number(totalNet)).toFixed(2)}
+          </p>
           <p className="metric-subtext">Income minus expenses</p>
         </div>
       </div>
 
-      <div className="mb-8 grid gap-6 lg:grid-cols-2">
-        <div className="panel-card min-h-[430px] p-6">
-          <h3 className="section-title">Income vs Expenses</h3>
+      <div className="mb-8 grid gap-4 lg:grid-cols-2">
+        <div className="panel-card min-h-[430px] p-4 sm:p-6">
+          <h3 className="section-title font-display">Income vs Expenses</h3>
           <p className="mb-5 text-sm text-muted">
             Monthly comparison for the selected period
           </p>
 
-          <div className="h-[320px]">
+          <div className="h-[280px] sm:h-[320px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={safeMonthlyData}>
                 <CartesianGrid strokeDasharray="4 4" stroke="var(--border)" />
@@ -185,21 +188,21 @@ export default function ReportsClient({
           </div>
         </div>
 
-        <div className="panel-card min-h-[430px] p-6">
-          <h3 className="section-title">Top Expense Categories</h3>
+        <div className="panel-card min-h-[430px] p-4 sm:p-6">
+          <h3 className="section-title font-display">Top Expense Categories</h3>
           <p className="mb-5 text-sm text-muted">
             Largest spending categories for the selected period
           </p>
 
-          <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-            <div className="h-[320px]">
+          <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+            <div className="h-[280px] sm:h-[320px]">
               {safeCategoryData.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={safeCategoryData}
                       dataKey="value"
-                      outerRadius={110}
+                      outerRadius={95}
                       label={({ name, percent }) =>
                         `${name} ${((percent || 0) * 100).toFixed(0)}%`
                       }
@@ -225,22 +228,22 @@ export default function ReportsClient({
               )}
             </div>
 
-            <div className="max-h-[320px] space-y-3 overflow-y-auto pr-2">
+            <div className="max-h-[320px] space-y-3 overflow-y-auto pr-1 sm:pr-2">
               {topCategories.length > 0 ? (
                 topCategories.map((item, index) => (
                   <div
                     key={`${item.name}-${index}`}
-                    className="empty-surface flex items-center justify-between rounded-2xl border px-4 py-3"
+                    className="empty-surface flex items-center justify-between gap-3 rounded-2xl border px-4 py-3"
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex min-w-0 items-center gap-3">
                       <span
-                        className="h-3 w-3 rounded-full"
+                        className="h-3 w-3 shrink-0 rounded-full"
                         style={{ backgroundColor: item.color }}
                       />
-                      <span className="font-medium">{item.name}</span>
+                      <span className="truncate font-medium">{item.name}</span>
                     </div>
 
-                    <span className="font-semibold">
+                    <span className="shrink-0 font-semibold">
                       ${Number(item.value).toFixed(2)}
                     </span>
                   </div>
@@ -255,13 +258,13 @@ export default function ReportsClient({
         </div>
       </div>
 
-      <div className="panel-card p-6">
-        <h3 className="section-title">Net Trend</h3>
+      <div className="panel-card p-4 sm:p-6">
+        <h3 className="section-title font-display">Net Trend</h3>
         <p className="mb-5 text-sm text-muted">
           Monthly net income after expenses
         </p>
 
-        <div className="h-[340px]">
+        <div className="h-[300px] sm:h-[340px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={safeMonthlyData}>
               <CartesianGrid strokeDasharray="4 4" stroke="var(--border)" />

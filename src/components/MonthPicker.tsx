@@ -45,11 +45,11 @@ export default function MonthPicker({ selectedMonth }: Props) {
   const displayDate = new Date(`${selectedMonth}-01T00:00:00`)
 
   return (
-    <div className="relative inline-block">
+    <div className="relative w-full sm:inline-block sm:w-auto">
       <button
         type="button"
         onClick={handleOpenPicker}
-        className="btn-secondary flex items-center gap-2"
+        className="btn-secondary flex w-full items-center justify-between gap-2 sm:w-auto sm:justify-center"
       >
         <span>{format(displayDate, 'MMMM yyyy')}</span>
         <CalendarDays className="h-4 w-4 text-slate-500" />

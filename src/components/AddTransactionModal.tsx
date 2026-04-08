@@ -103,17 +103,22 @@ export default function AddTransactionModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 px-4">
-      <div className="panel-card w-full max-w-md p-6">
-        <div className="mb-5 flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-semibold">Add Transaction</h2>
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/45 p-3 sm:items-center sm:px-4">
+      <div className="panel-card max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl p-4 sm:p-6">
+        <div className="mb-5 flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h2 className="font-display text-2xl font-semibold">
+              Add Transaction
+            </h2>
             <p className="mt-1 text-sm text-muted">
               Record income or an expense
             </p>
           </div>
 
-          <button onClick={onClose} className="btn-secondary !px-3 !py-2">
+          <button
+            onClick={onClose}
+            className="btn-secondary shrink-0 !px-3 !py-2"
+          >
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -172,7 +177,7 @@ export default function AddTransactionModal({
           <div>
             <label className="mb-2 block text-sm font-medium">Amount</label>
             <input
-              className="soft-input"
+              className="soft-input w-full"
               type="number"
               step="0.01"
               placeholder="0.00"
@@ -184,7 +189,7 @@ export default function AddTransactionModal({
           <div>
             <label className="mb-2 block text-sm font-medium">Title</label>
             <input
-              className="soft-input"
+              className="soft-input w-full"
               placeholder="Optional title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -194,7 +199,7 @@ export default function AddTransactionModal({
           <div>
             <label className="mb-2 block text-sm font-medium">Notes</label>
             <textarea
-              className="soft-input min-h-[96px] resize-none"
+              className="soft-input min-h-[96px] w-full resize-none"
               placeholder="Optional notes"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
@@ -203,11 +208,11 @@ export default function AddTransactionModal({
 
           {message ? <p className="text-sm text-red-600">{message}</p> : null}
 
-          <div className="flex gap-3 pt-2">
+          <div className="grid gap-3 pt-2 sm:flex">
             <button
               type="button"
               onClick={onClose}
-              className="btn-secondary flex-1"
+              className="btn-secondary w-full flex-1"
             >
               Cancel
             </button>
@@ -215,7 +220,7 @@ export default function AddTransactionModal({
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary flex-1"
+              className="btn-primary w-full flex-1"
             >
               {loading ? 'Adding...' : 'Add Transaction'}
             </button>

@@ -38,19 +38,19 @@ export default function BudgetsClient({ selectedMonth, budgetSummary }: Props) {
     <>
       <div className="mb-8 flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
         <div>
-          <h2 className="page-title">Budgets</h2>
+          <h2 className="page-title font-display">Budgets</h2>
           <p className="mt-2 text-base text-muted">
             Manage your monthly spending limits by category
           </p>
         </div>
 
-        <div className="flex flex-wrap items-start gap-3">
+        <div className="grid w-full gap-3 sm:flex sm:w-auto sm:flex-wrap sm:items-start">
           <MonthPicker selectedMonth={selectedMonth} />
           <CopyPreviousBudgetsButton selectedMonth={selectedMonth} />
         </div>
       </div>
 
-      <div className="mb-8 grid gap-5 md:grid-cols-4">
+      <div className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <div className="metric-card">
           <div className="mb-5 flex items-start justify-between">
             <p className="metric-label">Total Budgeted</p>
@@ -86,9 +86,9 @@ export default function BudgetsClient({ selectedMonth, budgetSummary }: Props) {
         </div>
       </div>
 
-      <div className="panel-card p-6">
+      <div className="panel-card p-4 sm:p-6">
         <div className="mb-5">
-          <h3 className="section-title">Monthly Budgets</h3>
+          <h3 className="section-title font-display">Monthly Budgets</h3>
           <p className="text-sm text-muted">
             Set and track budgets for your expense categories
           </p>
@@ -105,7 +105,7 @@ export default function BudgetsClient({ selectedMonth, budgetSummary }: Props) {
                   backgroundColor: 'var(--card)',
                 }}
               >
-                <div className="mb-3 flex items-start justify-between gap-3">
+                <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
                       <span
@@ -116,23 +116,25 @@ export default function BudgetsClient({ selectedMonth, budgetSummary }: Props) {
                     </div>
                   </div>
 
-                  <SetBudgetButton
-                    categoryId={item.id}
-                    categoryName={item.name}
-                    selectedMonth={selectedMonth}
-                    initialAmount={item.budgetAmount}
-                  />
+                  <div className="w-full sm:w-auto">
+                    <SetBudgetButton
+                      categoryId={item.id}
+                      categoryName={item.name}
+                      selectedMonth={selectedMonth}
+                      initialAmount={item.budgetAmount}
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between gap-3 text-sm">
                     <span className="text-muted">Spent</span>
                     <span className="font-medium">
                       ${item.spent.toFixed(2)}
                     </span>
                   </div>
 
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between gap-3 text-sm">
                     <span className="text-muted">Budget</span>
                     <span className="font-medium">
                       {item.budgetAmount > 0
@@ -153,7 +155,7 @@ export default function BudgetsClient({ selectedMonth, budgetSummary }: Props) {
                     />
                   </div>
 
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between gap-3 text-sm">
                     <span className="text-muted">Remaining</span>
                     <span
                       className={
@@ -167,7 +169,7 @@ export default function BudgetsClient({ selectedMonth, budgetSummary }: Props) {
                     </span>
                   </div>
 
-                  <div className="flex justify-between text-xs text-muted">
+                  <div className="flex justify-between gap-3 text-xs text-muted">
                     <span>Used</span>
                     <span>
                       {item.budgetAmount > 0

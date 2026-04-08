@@ -98,15 +98,15 @@ export default function SetBudgetButton({
     <>
       <button
         onClick={() => setOpen(true)}
-        className="btn-secondary !px-3 !py-2 text-sm"
+        className="btn-secondary w-full !px-3 !py-2 text-sm sm:w-auto"
       >
         {initialAmount > 0 ? 'Edit Budget' : 'Set Budget'}
       </button>
 
       {open ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 px-4">
-          <div className="panel-card w-full max-w-md p-6">
-            <h2 className="text-2xl font-semibold">
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/45 p-3 sm:items-center sm:px-4">
+          <div className="panel-card max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl p-4 sm:p-6">
+            <h2 className="font-display text-2xl font-semibold">
               Budget for {categoryName}
             </h2>
             <p className="mt-1 text-sm text-muted">Month: {selectedMonth}</p>
@@ -117,7 +117,7 @@ export default function SetBudgetButton({
                   Budget Amount
                 </label>
                 <input
-                  className="soft-input"
+                  className="soft-input w-full"
                   type="number"
                   step="0.01"
                   min="0"
@@ -131,11 +131,11 @@ export default function SetBudgetButton({
                 <p className="text-sm text-red-600">{message}</p>
               ) : null}
 
-              <div className="flex gap-3 pt-2">
+              <div className="grid gap-3 pt-2 sm:flex">
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  className="btn-secondary flex-1"
+                  className="btn-secondary w-full flex-1"
                 >
                   Cancel
                 </button>
@@ -144,7 +144,7 @@ export default function SetBudgetButton({
                   <button
                     type="button"
                     onClick={handleRemove}
-                    className="btn-secondary flex-1"
+                    className="btn-secondary w-full flex-1"
                   >
                     Remove
                   </button>
@@ -153,7 +153,7 @@ export default function SetBudgetButton({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="btn-primary flex-1"
+                  className="btn-primary w-full flex-1"
                 >
                   {loading ? 'Saving...' : 'Save'}
                 </button>

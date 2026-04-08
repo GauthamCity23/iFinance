@@ -146,7 +146,7 @@ export default function TransactionsClient({
 
       <div className="mb-8 flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
         <div>
-          <h2 className="page-title">All Transactions</h2>
+          <h2 className="page-title font-display">All Transactions</h2>
           <p className="mt-2 text-base text-muted">
             View and manage your transaction history
           </p>
@@ -154,20 +154,22 @@ export default function TransactionsClient({
 
         <button
           onClick={() => setTransactionModalOpen(true)}
-          className="btn-primary"
+          className="btn-primary w-full sm:w-auto"
         >
           + Add Transaction
         </button>
       </div>
 
-      <div className="panel-card mb-6 p-6">
+      <div className="panel-card mb-6 p-4 sm:p-6">
         <div className="mb-4 flex items-center gap-2">
           <Search className="h-4 w-4 text-muted" />
-          <h3 className="text-lg font-semibold">Filters & Search</h3>
+          <h3 className="font-display text-lg font-semibold">
+            Filters & Search
+          </h3>
         </div>
 
-        <div className="grid gap-3 lg:grid-cols-5">
-          <div className="relative">
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+          <div className="relative sm:col-span-2 xl:col-span-1">
             <Search className="pointer-events-none absolute left-4 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-muted" />
 
             <input
@@ -227,7 +229,7 @@ export default function TransactionsClient({
             onClick={() =>
               setSortOrder(sortOrder === 'newest' ? 'oldest' : 'newest')
             }
-            className="btn-secondary flex items-center justify-center gap-2"
+            className="btn-secondary flex w-full items-center justify-center gap-2"
           >
             <ArrowUpDown className="h-4 w-4" />
             Date: {sortOrder === 'newest' ? 'Newest First' : 'Oldest First'}
@@ -235,7 +237,7 @@ export default function TransactionsClient({
         </div>
       </div>
 
-      <div className="mb-6 grid gap-4 md:grid-cols-3">
+      <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div className="metric-card metric-balance">
           <p className="metric-label">Total Transactions</p>
           <p className="metric-value">{totalTransactions}</p>
@@ -252,8 +254,10 @@ export default function TransactionsClient({
         </div>
       </div>
 
-      <div className="panel-card p-6">
-        <h3 className="mb-1 text-2xl font-semibold">Transaction History</h3>
+      <div className="panel-card p-4 sm:p-6">
+        <h3 className="font-display mb-1 text-2xl font-semibold">
+          Transaction History
+        </h3>
         <p className="mb-5 text-muted">
           Showing {filteredTransactions.length} transaction
           {filteredTransactions.length === 1 ? '' : 's'}

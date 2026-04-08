@@ -153,32 +153,32 @@ export default function DashboardClient({
 
       <div className="mb-8 flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
         <div>
-          <h2 className="page-title">Dashboard</h2>
+          <h2 className="page-title font-display">Dashboard</h2>
           <p className="mt-2 text-base text-muted">
             Track your finances with ease
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="grid w-full gap-3 sm:flex sm:w-auto sm:flex-wrap">
           <MonthPicker selectedMonth={selectedMonth} />
 
           <button
             onClick={() => setCategoryModalOpen(true)}
-            className="btn-secondary"
+            className="btn-secondary w-full sm:w-auto"
           >
             + Add Category
           </button>
 
           <button
             onClick={() => setTransactionModalOpen(true)}
-            className="btn-primary"
+            className="btn-primary w-full sm:w-auto"
           >
             + Add Transaction
           </button>
         </div>
       </div>
 
-      <div className="mb-8 grid gap-5 md:grid-cols-3">
+      <div className="mb-8 grid gap-4 md:grid-cols-3">
         <div className="metric-card metric-income">
           <div className="mb-5 flex items-start justify-between">
             <p className="metric-label">Total Income</p>
@@ -210,15 +210,15 @@ export default function DashboardClient({
         </div>
       </div>
 
-      <div className="mb-8 grid gap-6 lg:grid-cols-2">
-        <div className="panel-card p-6">
-          <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      <div className="mb-8 grid gap-4 lg:grid-cols-2">
+        <div className="panel-card p-4 sm:p-6">
+          <div className="mb-4 flex flex-col gap-4">
             <div>
-              <h3 className="section-title">6-Month Trend</h3>
+              <h3 className="section-title font-display">6-Month Trend</h3>
               <p className="mt-1 text-sm text-muted">{chartSubtitle}</p>
             </div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap">
               <button
                 onClick={() => setChartView('income')}
                 className={
@@ -248,7 +248,7 @@ export default function DashboardClient({
             </div>
           </div>
 
-          <div className="h-[300px]">
+          <div className="h-[280px] sm:h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={monthlyTrend}>
                 <CartesianGrid strokeDasharray="4 4" stroke="var(--border)" />
@@ -289,13 +289,13 @@ export default function DashboardClient({
           </div>
         </div>
 
-        <div className="panel-card p-6">
-          <h3 className="section-title">Category Breakdown</h3>
+        <div className="panel-card p-4 sm:p-6">
+          <h3 className="section-title font-display">Category Breakdown</h3>
           <p className="mb-5 text-sm text-muted">
             Spending by category this month
           </p>
 
-          <div className="h-[300px]">
+          <div className="h-[280px] sm:h-[300px]">
             {categoryData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -303,7 +303,7 @@ export default function DashboardClient({
                     data={categoryData}
                     cx="50%"
                     cy="50%"
-                    outerRadius={100}
+                    outerRadius={90}
                     label={({ name, percent }) =>
                       `${name} ${((percent || 0) * 100).toFixed(0)}%`
                     }
@@ -332,10 +332,10 @@ export default function DashboardClient({
         </div>
       </div>
 
-      <div className="mb-8 panel-card p-6">
-        <div className="mb-5 flex items-start justify-between gap-4">
+      <div className="mb-8 panel-card p-4 sm:p-6">
+        <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h3 className="section-title">Budget Snapshot</h3>
+            <h3 className="section-title font-display">Budget Snapshot</h3>
             <p className="text-sm text-muted">
               Quick view of this month’s budgets
             </p>
@@ -343,13 +343,13 @@ export default function DashboardClient({
 
           <Link
             href={`/budgets?month=${selectedMonth}`}
-            className="btn-secondary"
+            className="btn-secondary w-full text-center sm:w-auto"
           >
             View All Budgets
           </Link>
         </div>
 
-        <div className="mb-5 grid gap-4 md:grid-cols-4">
+        <div className="mb-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <div className="empty-surface rounded-2xl border p-4">
             <p className="text-sm text-muted">Budgeted</p>
             <p className="mt-2 text-2xl font-bold">
@@ -388,7 +388,7 @@ export default function DashboardClient({
                   backgroundColor: 'var(--card)',
                 }}
               >
-                <div className="mb-3 flex items-center justify-between gap-3">
+                <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                   <div className="min-w-0 flex items-center gap-2">
                     <span
                       className="h-3 w-3 rounded-full"
@@ -416,7 +416,7 @@ export default function DashboardClient({
                   />
                 </div>
 
-                <div className="mt-3 flex justify-between text-sm">
+                <div className="mt-3 flex flex-col gap-1 text-sm sm:flex-row sm:justify-between">
                   <span className="text-muted">
                     ${item.spent.toFixed(2)} spent
                   </span>
@@ -437,11 +437,11 @@ export default function DashboardClient({
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <div className="panel-card min-h-[460px] p-6">
-          <h3 className="section-title">Your Categories</h3>
+        <div className="panel-card min-h-[460px] p-4 sm:p-6">
+          <h3 className="section-title font-display">Your Categories</h3>
           <p className="mb-5 text-sm text-muted">Manage your categories</p>
 
-          <div className="grid max-h-[360px] gap-4 overflow-y-auto pr-2 md:grid-cols-2">
+          <div className="grid max-h-[360px] gap-4 overflow-y-auto pr-1 sm:pr-2 md:grid-cols-2">
             {categorySummary.map((cat) => (
               <div
                 key={cat.id}
@@ -480,14 +480,14 @@ export default function DashboardClient({
                 </div>
 
                 <p
-                  className={`text-3xl font-bold ${
+                  className={`text-2xl font-bold sm:text-3xl ${
                     cat.total >= 0 ? 'text-green-700' : 'text-red-700'
                   }`}
                 >
                   ${Math.abs(cat.total).toFixed(2)}
                 </p>
 
-                <div className="mt-3 flex items-center justify-between">
+                <div className="mt-3 flex items-center justify-between gap-3">
                   <p className="text-sm text-muted">
                     {cat.transactionCount} transaction
                     {cat.transactionCount === 1 ? '' : 's'}
@@ -508,11 +508,11 @@ export default function DashboardClient({
           </div>
         </div>
 
-        <div className="panel-card min-h-[460px] p-6">
-          <h3 className="section-title">Recent Transactions</h3>
+        <div className="panel-card min-h-[460px] p-4 sm:p-6">
+          <h3 className="section-title font-display">Recent Transactions</h3>
           <p className="mb-5 text-sm text-muted">Latest activity this month</p>
 
-          <div className="max-h-[360px] space-y-3 overflow-y-auto pr-2">
+          <div className="max-h-[360px] space-y-3 overflow-y-auto pr-1 sm:pr-2">
             {recentTransactions.length > 0 ? (
               recentTransactions.map((txn) => {
                 const category = Array.isArray(txn.categories)
@@ -524,18 +524,18 @@ export default function DashboardClient({
                 return (
                   <div
                     key={txn.id}
-                    className="empty-surface flex items-center justify-between rounded-2xl border px-4 py-4"
+                    className="empty-surface flex flex-col gap-4 rounded-2xl border px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex min-w-0 items-center gap-3">
                       <div
-                        className="flex h-11 w-11 items-center justify-center rounded-full text-sm font-bold text-white"
+                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
                         style={{ backgroundColor: badgeColor }}
                       >
                         {(category?.name || txn.title || 'T')[0]}
                       </div>
 
-                      <div>
-                        <p className="font-semibold">
+                      <div className="min-w-0">
+                        <p className="truncate font-semibold">
                           {category?.name || txn.title}
                         </p>
                         <p className="text-sm text-muted">
@@ -547,15 +547,15 @@ export default function DashboardClient({
                       </div>
                     </div>
 
-                    <div className="text-right">
+                    <div className="w-full text-left sm:w-auto sm:text-right">
                       <p
-                        className={`text-2xl font-bold ${
+                        className={`text-xl font-bold sm:text-2xl ${
                           txn.type === 'income'
                             ? 'text-green-700'
                             : 'text-red-700'
                         }`}
                       >
-                        {txn.type === 'income' ? '+' : '-'}$
+                        {txn.type === 'income' ? '+$' : '-$'}
                         {Number(txn.amount).toFixed(2)}
                       </p>
                       <p className="text-xs text-muted capitalize">

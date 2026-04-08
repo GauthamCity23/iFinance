@@ -94,8 +94,12 @@ export default function CopyPreviousBudgetsButton({ selectedMonth }: Props) {
   }
 
   return (
-    <div className="flex flex-col items-end gap-2">
-      <button onClick={handleCopy} disabled={loading} className="btn-secondary">
+    <div className="flex w-full flex-col gap-2 sm:w-auto sm:items-end">
+      <button
+        onClick={handleCopy}
+        disabled={loading}
+        className="btn-secondary w-full sm:w-auto"
+      >
         {loading ? 'Copying...' : `Copy ${previousMonth} Budgets`}
       </button>
 

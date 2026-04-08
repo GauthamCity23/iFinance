@@ -71,17 +71,22 @@ export default function AddCategoryModal({ open, onClose }: Props) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 px-4">
-      <div className="panel-card w-full max-w-md p-6">
-        <div className="mb-5 flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-semibold">Create Category</h2>
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/45 p-3 sm:items-center sm:px-4">
+      <div className="panel-card max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl p-4 sm:p-6">
+        <div className="mb-5 flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h2 className="font-display text-2xl font-semibold">
+              Create Category
+            </h2>
             <p className="mt-1 text-sm text-muted">
               Add a new category for income or expenses
             </p>
           </div>
 
-          <button onClick={onClose} className="btn-secondary !px-3 !py-2">
+          <button
+            onClick={onClose}
+            className="btn-secondary shrink-0 !px-3 !py-2"
+          >
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -92,7 +97,7 @@ export default function AddCategoryModal({ open, onClose }: Props) {
               Category Name
             </label>
             <input
-              className="soft-input"
+              className="soft-input w-full"
               placeholder="e.g. Groceries"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -121,7 +126,7 @@ export default function AddCategoryModal({ open, onClose }: Props) {
                 type="color"
                 value={selectedColor}
                 onChange={(e) => setSelectedColor(e.target.value)}
-                className="h-11 w-16 cursor-pointer rounded-lg border"
+                className="h-11 w-16 shrink-0 cursor-pointer rounded-lg border"
                 style={{
                   backgroundColor: 'var(--card)',
                   borderColor: 'var(--border)',
@@ -139,11 +144,11 @@ export default function AddCategoryModal({ open, onClose }: Props) {
 
           {message ? <p className="text-sm text-red-600">{message}</p> : null}
 
-          <div className="flex gap-3 pt-2">
+          <div className="grid gap-3 pt-2 sm:flex">
             <button
               type="button"
               onClick={onClose}
-              className="btn-secondary flex-1"
+              className="btn-secondary w-full flex-1"
             >
               Cancel
             </button>
@@ -151,7 +156,7 @@ export default function AddCategoryModal({ open, onClose }: Props) {
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary flex-1"
+              className="btn-primary w-full flex-1"
             >
               {loading ? 'Creating...' : 'Create Category'}
             </button>

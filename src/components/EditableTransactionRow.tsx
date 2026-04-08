@@ -155,11 +155,11 @@ export default function EditableTransactionRow({ txn, categories }: Props) {
           />
         </div>
 
-        <div className="mt-4 flex gap-3">
+        <div className="mt-4 grid gap-3 sm:flex">
           <button
             onClick={handleSave}
             disabled={saving}
-            className="btn-primary flex items-center gap-2"
+            className="btn-primary flex w-full items-center justify-center gap-2 sm:w-auto"
           >
             <Save className="h-4 w-4" />
             {saving ? 'Saving...' : 'Save'}
@@ -167,7 +167,7 @@ export default function EditableTransactionRow({ txn, categories }: Props) {
 
           <button
             onClick={() => setIsEditing(false)}
-            className="btn-secondary flex items-center gap-2"
+            className="btn-secondary flex w-full items-center justify-center gap-2 sm:w-auto"
           >
             <X className="h-4 w-4" />
             Cancel
@@ -178,18 +178,20 @@ export default function EditableTransactionRow({ txn, categories }: Props) {
   }
 
   return (
-    <div className="empty-surface flex items-center justify-between rounded-2xl border px-4 py-4">
-      <div className="flex items-center gap-4">
+    <div className="empty-surface flex flex-col gap-4 rounded-2xl border px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex min-w-0 items-center gap-4">
         <div
-          className="flex h-11 w-11 items-center justify-center rounded-full text-sm font-bold text-white"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
           style={{ backgroundColor: badgeColor }}
         >
           {(category?.name || txn.title || 'T')[0]}
         </div>
 
-        <div>
-          <div className="flex items-center gap-2">
-            <p className="font-semibold">{category?.name || txn.title}</p>
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="truncate font-semibold">
+              {category?.name || txn.title}
+            </p>
             <span
               className={`rounded-md px-2 py-0.5 text-xs font-medium ${
                 txn.type === 'income'
@@ -207,25 +209,28 @@ export default function EditableTransactionRow({ txn, categories }: Props) {
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
-        <div className="text-right">
+      <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
+        <div className="w-full text-left sm:w-auto sm:text-right">
           <p
-            className={`text-3xl font-bold ${
+            className={`text-2xl font-bold sm:text-3xl ${
               txn.type === 'income' ? 'text-green-700' : 'text-red-700'
             }`}
           >
-            {txn.type === 'income' ? '+' : '-'}${Number(txn.amount).toFixed(2)}
+            {txn.type === 'income' ? '+$' : '-$'}
+            {Number(txn.amount).toFixed(2)}
           </p>
         </div>
 
-        <button
-          onClick={() => setIsEditing(true)}
-          className="btn-secondary !px-3 !py-2"
-        >
-          <Pencil className="h-4 w-4" />
-        </button>
+        <div className="flex items-center gap-3 self-end sm:self-auto">
+          <button
+            onClick={() => setIsEditing(true)}
+            className="btn-secondary !px-3 !py-2"
+          >
+            <Pencil className="h-4 w-4" />
+          </button>
 
-        <DeleteTransactionButton transactionId={txn.id} />
+          <DeleteTransactionButton transactionId={txn.id} />
+        </div>
       </div>
     </div>
   )
